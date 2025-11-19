@@ -1,4 +1,3 @@
-let buku = [
 { resi: "001", judul: "Matematika Dasar", penulis: "A. Putra", status: "Tersedia" },
 { resi: "002", judul: "IPA Terpadu", penulis: "B. Wati", status: "Dipinjam" }
 ];
