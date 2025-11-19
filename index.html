@@ -1,55 +1,328 @@
+# index.html
+
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Perpustakaan Sekolah</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perpustakaan Sekolah</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header>
-<h1>Perpustakaan Sekolah</h1>
-<nav>
-<a href="#beranda">Beranda</a>
-<a href="#koleksi">Koleksi Buku</a>
-<a href="#cari">Pencarian</a>
-</nav>
-</header>
+    <header>
+        <h1>Perpustakaan Sekolah</h1>
+        <nav>
+            <a href="#beranda">Beranda</a>
+            <a href="#koleksi">Koleksi Buku</a>
+            <a href="#cari">Pencarian</a>
+        </nav>
+    </header>
 
+    <section id="beranda" class="section">
+        <h2>Selamat Datang</h2>
+        <p>Website perpustakaan sekolah untuk melihat koleksi buku dan melakukan pencarian.</p>
+    </section>
 
-<section id="beranda" class="section">
-<h2>Selamat Datang</h2>
-<p>Website perpustakaan sekolah untuk melihat koleksi buku dan melakukan pencarian.</p>
-</section>
+    <section id="koleksi" class="section">
+        <h2>Koleksi Buku</h2>
+        <div id="daftar-buku" class="grid"></div>
+    </section>
 
-
-<section id="koleksi" class="section">
-<h2>Koleksi Buku</h2>
-<div id="daftar-buku" class="grid"></div>
-</section>
-
-
-<section id="cari" class="section">
-<h2>Pencarian Buku</h2>
-<input type="text" id="search" placeholder="Cari judul buku..." />
-<button onclick="cariBuku()">Cari</button>
-<div id="hasil-cari"></div>
-</section>
-
+    <section id="cari" class="section">
+        <h2>Pencarian Buku</h2>
+        <input type="text" id="search" placeholder="Cari judul buku..." />
+        <button onclick="cariBuku()">Cari</button>
+        <div id="hasil-cari"></div>
+    </section>
 
 <section id="admin" class="section">
-<h2>Tambah Buku Baru</h2>
-<input type="text" id="resi" placeholder="Nomor Resi" />
-<input type="text" id="judul" placeholder="Judul Buku" />
-<input type="text" id="penulis" placeholder="Penulis" />
-<select id="status">
-<option value="Tersedia">Tersedia</option>
-<option value="Dipinjam">Dipinjam</option>
-</select>
-<button onclick="tambahBuku()">Tambah Buku</button>
-<p id="notif"></p>
+    <h2>Tambah Buku Baru</h2>
+    <input type="text" id="resi" placeholder="Nomor Resi" />
+    <input type="text" id="judul" placeholder="Judul Buku" />
+    <input type="text" id="penulis" placeholder="Penulis" />
+    <select id="status">
+        <option value="Tersedia">Tersedia</option>
+        <option value="Dipinjam">Dipinjam</option>
+    </select>
+    <button onclick="tambahBuku()">Tambah Buku</button>
+    <p id="notif"></p>
 </section>
 
-
 <script src="script.js"></script>
-</html
+</body>
+</html>
+```
+
+---
+
+# style.css
+
+````css
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #eef1f5;
+}
+header {
+    background: #1f2d3d;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.section {
+    padding: 25px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 14px rgba(0,0,0,0.15);
+}
+.sampul {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+```css
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+}
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.section {
+    padding: 20px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+}
+````
+
+---
+
+# script.js
+
+````javascript
+// Load from localStorage
+let buku = JSON.parse(localStorage.getItem("dataBuku")) || [
+    { resi: "001", judul: "Matematika Dasar", penulis: "A. Putra", status: "Tersedia", sampul: "https://via.placeholder.com/150", sinopsis: "Buku dasar untuk mempelajari konsep matematika." },
+    { resi: "002", judul: "IPA Terpadu", penulis: "B. Wati", status: "Dipinjam", sampul: "https://via.placeholder.com/150", sinopsis: "Pembahasan materi Ilmu Pengetahuan Alam secara lengkap." }
+];
+
+function simpanData() {
+    localStorage.setItem("dataBuku", JSON.stringify(buku));
+}
+
+function tampilkanBuku() {
+    const container = document.getElementById("daftar-buku");
+    container.innerHTML = "";
+    buku.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <img src="${b.sampul}" alt="Sampul Buku" class="sampul">
+            <h3>${b.judul}</h3>
+            <p>Penulis: ${b.penulis}</p>
+            <p>Resi: ${b.resi}</p>
+            <p>Status: <strong>${b.status}</strong></p>
+            <p><em>Sinopsis:</em> ${b.sinopsis}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+tampilkanBuku();
+
+function cariBuku() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    const hasil = document.getElementById("hasil-cari");
+    hasil.innerHTML = "";
+
+    const ditemukan = buku.filter(b =>
+        b.judul.toLowerCase().includes(keyword) ||
+        b.resi.toLowerCase().includes(keyword)
+    );
+
+    if (ditemukan.length === 0) {
+        hasil.innerHTML = "<p>Tidak ada buku ditemukan.</p>";
+    } else {
+        ditemukan.forEach(b => {
+            hasil.innerHTML += `<p><strong>${b.judul}</strong> - ${b.penulis} (Resi: ${b.resi}) - Status: ${b.status}</p>`;
+        });
+    }
+}
+
+function tambahBuku() {
+    const resi = document.getElementById("resi").value;
+    const judul = document.getElementById("judul").value;
+    const penulis = document.getElementById("penulis").value;
+    const status = document.getElementById("status").value;
+    const sampul = "https://via.placeholder.com/150";
+    const sinopsis = "Belum ada sinopsis.";
+
+    if (!resi || !judul || !penulis) {
+        document.getElementById("notif").innerText = "Semua data harus diisi.";
+        return;
+    }
+
+    buku.push({ resi, judul, penulis, status, sampul, sinopsis });
+    simpanData();
+    document.getElementById("notif").innerText = "Buku berhasil ditambahkan.";
+    tampilkanBuku();
+}
+```javascript
+let buku = [
+    { resi: "001", judul: "Matematika Dasar", penulis: "A. Putra", status: "Tersedia", sampul: "https://via.placeholder.com/150", sinopsis: "Buku dasar untuk mempelajari konsep matematika." },
+    { resi: "002", judul: "IPA Terpadu", penulis: "B. Wati", status: "Dipinjam", sampul: "https://via.placeholder.com/150", sinopsis: "Pembahasan materi Ilmu Pengetahuan Alam secara lengkap." }
+];
+
+function tampilkanBuku() {
+    const container = document.getElementById("daftar-buku");
+    container.innerHTML = "";
+    buku.forEach(b => {
+        const card = document.createElement("div");("div");
+        card.className = "card";
+        card.innerHTML = `
+            <img src="${b.sampul}" alt="Sampul Buku" class="sampul">
+            <h3>${b.judul}</h3>
+            <p>Penulis: ${b.penulis}</p>
+            <p>Resi: ${b.resi}</p>
+            <p>Status: <strong>${b.status}</strong></p>
+            <p><em>Sinopsis:</em> ${b.sinopsis}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+tampilkanBuku();
+
+function cariBuku() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    const hasil = document.getElementById("hasil-cari");
+    hasil.innerHTML = "";
+
+    const ditemukan = buku.filter(b =>
+        b.judul.toLowerCase().includes(keyword) ||
+        b.resi.toLowerCase().includes(keyword)
+    );
+
+    if (ditemukan.length === 0) {
+        hasil.innerHTML = "<p>Tidak ada buku ditemukan.</p>";
+    } else {
+        ditemukan.forEach(b => {
+            hasil.innerHTML += `<p><strong>${b.judul}</strong> - ${b.penulis} (Resi: ${b.resi}) - Status: ${b.status}</p>`;
+        });
+    }
+}
+
+function tambahBuku() {
+    const resi = document.getElementById("resi").value;
+    const judul = document.getElementById("judul").value;
+    const penulis = document.getElementById("penulis").value;
+    const status = document.getElementById("status").value;
+
+    if (!resi || !judul || !penulis) {
+        document.getElementById("notif").innerText = "Semua data harus diisi.";
+        return;
+    }
+
+    buku.push({ resi, judul, penulis, status });
+    document.getElementById("notif").innerText = "Buku berhasil ditambahkan.";
+    tampilkanBuku();
+}
+```javascript
+let buku = [
+    { resi: "001", judul: "Matematika Dasar", penulis: "A. Putra", status: "Tersedia" },
+    { resi: "002", judul: "IPA Terpadu", penulis: "B. Wati", status: "Dipinjam" }
+];
+
+function tampilkanBuku() {
+    const container = document.getElementById("daftar-buku");
+    container.innerHTML = "";
+    buku.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h3>${b.judul}</h3>
+            <p>Penulis: ${b.penulis}</p>
+            <p>Resi: ${b.resi}</p>
+            <p>Status: <strong>${b.status}</strong></p>`;
+        container.appendChild(card);
+    });
+}
+
+tampilkanBuku();
+
+function cariBuku() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    const hasil = document.getElementById("hasil-cari");
+    hasil.innerHTML = "";
+
+    const ditemukan = buku.filter(b =>
+        b.judul.toLowerCase().includes(keyword) ||
+        b.resi.toLowerCase().includes(keyword)
+    );
+
+    if (ditemukan.length === 0) {
+        hasil.innerHTML = "<p>Tidak ada buku ditemukan.</p>";
+    } else {
+        ditemukan.forEach(b => {
+            hasil.innerHTML += `<p><strong>${b.judul}</strong> - ${b.penulis} (Resi: ${b.resi}) - Status: ${b.status}</p>`;
+        });
+    }
+}
+
+function tambahBuku() {
+    const resi = document.getElementById("resi").value;
+    const judul = document.getElementById("judul").value;
+    const penulis = document.getElementById("penulis").value;
+    const status = document.getElementById("status").value;
+
+    if (!resi || !judul || !penulis) {
+        document.getElementById("notif").innerText = "Semua data harus diisi.";
+        return;
+    }
+
+    buku.push({ resi, judul, penulis, status });
+    document.getElementById("notif").innerText = "Buku berhasil ditambahkan.";
+    tampilkanBuku();
+}
+````
